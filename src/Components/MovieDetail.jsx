@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-function MovieDetail() {
+function MovieDetail({title}) {
+    connst [movieDetails, setMovieDetails] = useState({})
+    const fetchMovieDetail = async(title) => {
+
+    }
   return (
     <div>
       

@@ -5,6 +5,7 @@ function Searchbar() {
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const fetchData = async (input) => {
     console.log(input);
@@ -44,7 +45,9 @@ function Searchbar() {
     fetchData(searchInput);
   };
 
-  console.log(searchResult);
+  const handleMovieDetail = (title) => {
+    setSelectedMovie(title);
+  };
   
 
   return (
@@ -63,13 +66,14 @@ function Searchbar() {
 
       <div className="results-container">
         {searchResult.map((movie) => (
-          <div key={movie.imdbID} className="movie-card">
+          <div key={movie.imdbID} className="movie-card" onClick={handleMovieDetail}>
             <img src={movie.Poster} alt={movie.Title} />
             <h3>{movie.Title}</h3>
             <p>Year: {movie.Year}</p>
           </div>
         ))}
       </div>
+      {selectedMovie && <MovieDetail title={selectedMovie} />}
     </div>
   );
 }
