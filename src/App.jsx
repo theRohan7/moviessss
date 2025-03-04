@@ -3,11 +3,11 @@ import './App.css'
 import Searchbar from './Components/Searchbar'
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <main>
-      <h1>Search Moovies</h1>
+      <h1>Search Movies</h1>
       <Searchbar />
 
     </main>
