@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
+import MovieDetail from "./MovieDetail";
 
 function Searchbar() {
   const [searchInput, setSearchInput] = useState("");
@@ -8,8 +9,6 @@ function Searchbar() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const fetchData = async (input) => {
-    console.log(input);
-    
     if (input.trim() === "") {
       setSearchResult([]);
       return;
@@ -21,8 +20,6 @@ function Searchbar() {
         `https://www.omdbapi.com/?apikey=da60c1d4&s=${input}`
       );
       const data = await response.json();
-      console.log(data);
-      
 
       if (data.Response === "True") {
         setSearchResult(data.Search || []);
@@ -48,32 +45,50 @@ function Searchbar() {
   const handleMovieDetail = (title) => {
     setSelectedMovie(title);
   };
-  
+
+  const handleBack = () => {
+    setSelectedMovie(null);
+  };
 
   return (
-    <div>
-      <div className="search-container">
-        <input
-          className="searchbar"
-          type="text"
-          placeholder="search movies..."
-          value={searchInput}
-          onChange={handleInputChange}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
-      {isLoading && <p>Loading...</p>}
-
-      <div className="results-container">
-        {searchResult.map((movie) => (
-          <div key={movie.imdbID} className="movie-card" onClick={handleMovieDetail}>
-            <img src={movie.Poster} alt={movie.Title} />
-            <h3>{movie.Title}</h3>
-            <p>Year: {movie.Year}</p>
+    <div className="container">
+      {!selectedMovie && (
+        <>
+          <div className="search-container">
+            <input
+              className="searchbar"
+              type="text"
+              placeholder="Search movies..."
+              value={searchInput}
+              onChange={handleInputChange}
+            />
+            <button onClick={handleSearch}>Search</button>
           </div>
-        ))}
-      </div>
-      {selectedMovie && <MovieDetail title={selectedMovie} />}
+
+          {isLoading && <p>Loading...</p>}
+
+          <div className="results-container">
+            {searchResult.map((movie) => (
+              <div
+                key={movie.imdbID}
+                className="movie-card"
+                onClick={() => handleMovieDetail(movie.Title)}
+              >
+                <img src={movie.Poster} alt={movie.Title} />
+                <h3>{movie.Title}</h3>
+                <p>Year: {movie.Year}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {selectedMovie && (
+        <div>
+          <button onClick={handleBack}>Back to Search</button>
+          <MovieDetail title={selectedMovie} />
+        </div>
+      )}
     </div>
   );
 }
